@@ -3,10 +3,12 @@
 import os, sys, math
 import numpy as np
 # import cv2
+import signal
 import threading
 import pygame
 import time
 import ServoCmd 
+import RGB_Change
 # from gpiozero import AngularServo
 from time import sleep
 from Board import setPWMServoPulse
@@ -27,8 +29,18 @@ pSB_R2 = 0
 
 def control_thread(q):
     isSit = False
+    start = True
     pSB_CIRCLE_state = 0
+    RGB_Change.light_defult()
+    signal.signal(signal.SIGINT, RGB_Change.Stop)
+
+
     while True:
+        RGB_Change.light_change
+        if not start:
+            RGB_Change.close_light()
+            break
+
         if q != None:
             joystick_queue = q.get()
             q.queue.clear()
