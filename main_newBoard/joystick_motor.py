@@ -8,7 +8,7 @@ import threading
 import pygame
 import time
 import ServoCmd 
-import RGB_Change
+# import RGB_Change
 # from gpiozero import AngularServo
 from time import sleep
 from Board import setPWMServoPulse
@@ -31,15 +31,15 @@ def control_thread(q):
     isSit = False
     start = True
     pSB_CIRCLE_state = 0
-    RGB_Change.light_defult()
-    signal.signal(signal.SIGINT, RGB_Change.Stop)
+    # RGB_Change.light_defult()
+    # signal.signal(signal.SIGINT, RGB_Change.Stop)
 
 
     while True:
-        RGB_Change.light_change
-        if not start:
-            RGB_Change.close_light()
-            break
+        # RGB_Change.light_change
+        # if not start:
+        #     RGB_Change.close_light()
+        #     break
 
         if q != None:
             joystick_queue = q.get()
@@ -63,12 +63,12 @@ def control_thread(q):
                 
                 elif abs(joystick_queue["PSB_Left_Vertical_Axis"]) >= 0.01 or abs(joystick_queue["PSB_Right_Horizontal_Axis"]) >= 0.01:
                     ServoCmd.default()
-                    print(joystick_queue["PSB_Left_Vertical_Axis"], joystick_queue["PSB_Right_Horizontal_Axis"])
+                    # print(joystick_queue["PSB_Left_Vertical_Axis"], joystick_queue["PSB_Right_Horizontal_Axis"])
                     ServoCmd.move_joystick(joystick_queue["PSB_Left_Vertical_Axis"], joystick_queue["PSB_Right_Horizontal_Axis"])
 
         
             pSB_CIRCLE_state = joystick_queue["PSB_CIRCLE"]
-            print(pSB_CIRCLE_state, "sit:", isSit)
+            # print(pSB_CIRCLE_state, "sit:", isSit)
             # print(joystick_queue["PSB_Left_Vertical_Axis"], joystick_queue["PSB_Right_Vertical_Axis"])
     
 
