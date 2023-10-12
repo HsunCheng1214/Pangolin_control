@@ -28,6 +28,7 @@ pSB_R2 = 0
 
 
 def control_thread(q):
+    print("Pangolin run !!!")
     isSit = False
     start = True
     pSB_CIRCLE_state = 0
