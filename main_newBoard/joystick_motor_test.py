@@ -8,13 +8,9 @@ import threading
 import pygame
 import time
 import ServoCmd 
-# import RGB_Change
-# from gpiozero import AngularServo
 from time import sleep
 from Board import setPWMServoPulse
 from queue import Queue
-import RPi.GPIO as GPIO
-
 
 button_map = {"PSB_CROSS":2, "PSB_CIRCLE":1, "PSB_SQUARE":3, "PSB_TRIANGLE":0,
     "PSB_L1": 4, "PSB_R1":5, "PSB_L2":6, "PSB_R2":7,

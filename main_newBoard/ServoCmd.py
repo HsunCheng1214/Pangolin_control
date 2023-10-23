@@ -1,38 +1,38 @@
 import sys
 import threading
-from PWMServoControl import *
+# from PWMServoControl import *
 from time import sleep
 from Board import setPWMServoPulse
 # from multi_robot_datatype import BatteryState, OverViewState, JointStates, UWBState, Vector3, Twist
 # import ActionGroupControl as AGC
 
-servo = PWMServo()
+# servo = PWMServo()
 
-servo.setThreshold(1,500,2500)
-servo.setThreshold(2,500,2500)
-servo.setThreshold(3,500,2500)
-servo.setThreshold(4,500,2500) 
+# servo.setThreshold(1,500,2500)
+# servo.setThreshold(2,500,2500)
+# servo.setThreshold(3,500,2500)
+# servo.setThreshold(4,500,2500) 
 
-def getServoPulse(id):
-    return servo.servo_pwm_duty_now[id]
+# def getServoPulse(id):
+#     return servo.servo_pwm_duty_now[id]
 
-def getServoDeviation(id):
-    return servo.getDeviation(id)
+# def getServoDeviation(id):
+#     return servo.getDeviation(id)
 
 # def setServoPulse(id, pulse, use_time):
 #     servo.setPulse(id, pulse, use_time)
 
-def setServoDeviation(id ,dev):
-    servo.setDeviation(id, dev)
+# def setServoDeviation(id ,dev):
+#     servo.setDeviation(id, dev)
     
-def saveServoDeviation(id):
-    servo.saveDeviation(id)
+# def saveServoDeviation(id):
+#     servo.saveDeviation(id)
 
-def unloadServo(id):
-    servo.unload(id)
+# def unloadServo(id):
+#     servo.unload(id)
 
-def updatePulse(id):
-    servo.updatePulse(id)
+# def updatePulse(id):
+#     servo.updatePulse(id)
 
 def default():
     setPWMServoPulse(1, 1500, 100)
