@@ -5,6 +5,8 @@ import time
 GPIO.setmode(GPIO.BCM)
 
 # Set the GPIO pin number you connected the button to
+# key1 = 13
+# key2 = 23
 x = input("pin: ")
 button_pin = int(x)
 
