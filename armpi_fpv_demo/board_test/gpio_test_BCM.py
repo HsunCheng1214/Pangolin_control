@@ -13,23 +13,24 @@ button_pin = int(x)
 # Setup the button pin as input with pull-up resistor
 GPIO.setup(button_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
-key1 = 1
+key1_state = 1
+key1 = False
 
 try:
      while True:
+
+
         # Read the button state
-        button_pressed = GPIO.input(button_pin) == GPIO.LOW
-        
-        # Check if the button is pressed and the state is not already "button pressed"
-        if button_pressed and not button_state:
-            print("Button pressed")
-            button_state = True
-        # Check if the button is pressed and the state is already "button pressed"
-        elif button_pressed and button_state:
-            print("Button released")
-            button_state = False
-        
-        # Add a small delay to debounce the button (optional)
+        if GPIO.input(button_pin) == 0 and key1_state == 1:
+            if key1 == False:
+                #start conntrol
+                key1 = True
+            else:
+                #stop 
+                key1 = False
+               
+        key1_state = GPIO.input(button_pin)
+        print(key1)
         time.sleep(0.1)
 
 

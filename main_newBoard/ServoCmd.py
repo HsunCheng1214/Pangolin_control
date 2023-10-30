@@ -3,7 +3,7 @@ import threading
 # from PWMServoControl import *
 from time import sleep
 from Board import setPWMServoPulse
-# from multi_robot_datatype import BatteryState, OverViewState, JointStates, UWBState, Vector3, Twist
+from multi_robot_datatype import BatteryState, OverViewState, JointStates, UWBState, Vector3, Twist
 # import ActionGroupControl as AGC
 
 # servo = PWMServo()
@@ -54,6 +54,22 @@ def forward(servo_angle = [40, 40, -40, -40], sleepTime = 1.0, servo_rate = [1.0
 def move_joystick(linear_x, angular_z):
     # linear_x, _, _ = linear.x, linear.y, linear.z
     # _, _, angular_z = angular.x, angular.y, angular.z
+        
+    forward(servo_angle = [20, 0, 0, -20], sleepTime=0.08, servo_rate=[linear_x-angular_z, linear_x+angular_z])
+
+    forward(servo_angle = [-38, 0, 0, 38], sleepTime=0.08, servo_rate=[linear_x-angular_z, linear_x+angular_z])
+
+    forward(servo_angle = [-40, -40, 40, 40], sleepTime=0.08, servo_rate=[linear_x-angular_z, linear_x+angular_z])
+
+    forward(servo_angle = [0, -20, 20, 0], sleepTime=0.08, servo_rate=[linear_x-angular_z, linear_x+angular_z])
+
+    forward(servo_angle = [0, 38, -38, 0], sleepTime=0.08, servo_rate=[linear_x-angular_z, linear_x+angular_z])
+
+    forward(servo_angle = [40, 40, -40, -40], sleepTime=0.08, servo_rate=[linear_x-angular_z, linear_x+angular_z])
+
+def move(linear, angular):
+    linear_x, _, _ = linear.x, linear.y, linear.z
+    _, _, angular_z = angular.x, angular.y, angular.z
         
     forward(servo_angle = [20, 0, 0, -20], sleepTime=0.08, servo_rate=[linear_x-angular_z, linear_x+angular_z])
 

@@ -84,10 +84,11 @@ class PangolinStatus():
                     cmd_vel = queue_data.get()
                     queue_data.queue.clear()
                 if cmd_vel != None and self.twist.linear != 0.0 and self.twist.angular !=0.0:
-                    
+                    # print("1")
                     if self.twist.linear == -0.0:
-                        print(f"ctrl :     {cmd_vel}")
+                        # print(f"ctrl :     {cmd_vel}")
                         ServoCmd.move(linear=self.twist.linear, angular=self.twist.angular)
+                        # ServoCmd.move(linear=self.twist.angular, angular=self.twist.linear)
                     else:
                         
                         ServoCmd.move(linear=self.twist.linear, angular=self.twist.angular)
@@ -103,7 +104,7 @@ if __name__ == "__main__":
     while c != 'q':
         c = sys.stdin.read(1)
         if c == '':
-            print("1")
+            #print("1")
             time.sleep(0.1)
 
     pangolin_status.closeStatusManager()

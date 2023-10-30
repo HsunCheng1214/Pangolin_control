@@ -15,88 +15,67 @@ import RPi.GPIO as GPIO
 
 button_pin = 33 #gpio mode: board
 GPIO.setup(button_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-
+button_state = GPIO.input(button_pin)
 
 button_map = {"PSB_CROSS":2, "PSB_CIRCLE":1, "PSB_SQUARE":3, "PSB_TRIANGLE":0,
     "PSB_L1": 4, "PSB_R1":5, "PSB_L2":6, "PSB_R2":7,
     "PSB_SELECT":8, "PSB_START":9, "PSB_L3":10, "PSB_R3":11}
 axis_map = {"PSB_Left_Horizontal_Axis":0, "PSB_Left_Vertical_Axis":1, "PSB_Right_Horizontal_Axis":2, "PSB_Right_Vertical_Axis":3}
 
-
 servo = []
 left_rate = 0.5
 right_rate = 1.3
 pSB_R2 = 0
 
-# try:
-#     while True:
-#         # Read the button state
-#         button_state = GPIO.input(button_pin)
-
-#         # Check if the button is pressed
-#         if button_state == GPIO.LOW:
-#             print("Button pressed!")
-#         else:
-#             print("Button released!")
-
-#         # Wait for a short duration to avoid rapid button presses
-#         sleep(0.2)
-
-# except KeyboardInterrupt:
-#     # Clean up GPIO on keyboard interrupt (Ctrl+C)
-#     GPIO.cleanup()
-
 
 def control_thread(q):
-    isSit = False
-    start = True
     pSB_CIRCLE_state = 0
+    key1_state = 1
+    isSit = False
     key1 = False
 
     try:
         while True:
-            # Check if the button is pressed
-            if GPIO.input(button_pin) == GPIO.LOW:
-                if not key1:
-                    key1_state = "Button Pressed"
-                    key1 = True
-                print(key1_state)
-            else:
-                if key1:
-                    key2_state = "Button Released"
-                    key1 = False
-                print(key2_state)
+            if q != None:
+                joystick_queue = q.get()
+                q.queue.clear()
+
+                if GPIO.input(button_pin) == 0 and key1_state == 1:
+                    if key1 == False:
+                        key1 = True
+                    else:
+                        key1 = False
+
+                if key1_state == 1 and key1 == True:
+                    #start
+                    if joystick_queue["PSB_CIRCLE"] == 1 and pSB_CIRCLE_state == 0:
+                        if isSit == False:
+                            ServoCmd.sitDown()
+                            isSit = True
+                        else:
+                            ServoCmd.standUp()
+                            isSit = False
+
+                    if pSB_CIRCLE_state == 0 and isSit == True:
+                        ServoCmd.sit_act(joystick_queue["PSB_Left_Vertical_Axis"], joystick_queue["PSB_Right_Vertical_Axis"])
+                    
+                    elif pSB_CIRCLE_state == 0 and isSit == False:                
+                        if joystick_queue["PSB_Left_Vertical_Axis"] >= 0.01 and abs(joystick_queue["PSB_Right_Horizontal_Axis"]) >= 0.01:
+                            ServoCmd.move_joystick(0.4, joystick_queue["PSB_Right_Horizontal_Axis"])  
+                            
+                        elif joystick_queue["PSB_Left_Vertical_Axis"] <= -0.01 and abs(joystick_queue["PSB_Right_Horizontal_Axis"]) >= 0.01:
+                            ServoCmd.move_joystick(-0.4, joystick_queue["PSB_Right_Horizontal_Axis"])    
+                
+                        elif abs(joystick_queue["PSB_Left_Vertical_Axis"]) >= 0.01 or abs(joystick_queue["PSB_Right_Horizontal_Axis"]) >= 0.01:
+                            ServoCmd.default()
+                            ServoCmd.move_joystick(joystick_queue["PSB_Left_Vertical_Axis"], joystick_queue["PSB_Right_Horizontal_Axis"])
 
         
-            # Add a small delay to debounce the button
-            time.sleep(0.1)
+                    pSB_CIRCLE_state = joystick_queue["PSB_CIRCLE"]
 
-            # if q != None:
-            #     joystick_queue = q.get()
-            #     q.queue.clear()
-                
-            #     if joystick_queue["PSB_CIRCLE"] == 1 and pSB_CIRCLE_state == 0:
-            #         if isSit == False:
-            #             ServoCmd.sitDown()
-            #             isSit = True
-            #         else:
-            #             ServoCmd.standUp()
-            #             isSit = False
-            #     if pSB_CIRCLE_state == 0 and isSit == True:
-            #         ServoCmd.sit_act(joystick_queue["PSB_Left_Vertical_Axis"], joystick_queue["PSB_Right_Vertical_Axis"])
+                key1_state = GPIO.input(button_pin)
+                print(key1)
 
-            #     elif pSB_CIRCLE_state == 0 and isSit == False:                
-            #         if joystick_queue["PSB_Left_Vertical_Axis"] >= 0.01 and abs(joystick_queue["PSB_Right_Horizontal_Axis"]) >= 0.01:
-            #             ServoCmd.move_joystick(0.4, joystick_queue["PSB_Right_Horizontal_Axis"])  
-            #         elif joystick_queue["PSB_Left_Vertical_Axis"] <= -0.01 and abs(joystick_queue["PSB_Right_Horizontal_Axis"]) >= 0.01:
-            #             ServoCmd.move_joystick(-0.4, joystick_queue["PSB_Right_Horizontal_Axis"])    
-                    
-            #         elif abs(joystick_queue["PSB_Left_Vertical_Axis"]) >= 0.01 or abs(joystick_queue["PSB_Right_Horizontal_Axis"]) >= 0.01:
-            #             ServoCmd.default()
-            #             ServoCmd.move_joystick(joystick_queue["PSB_Left_Vertical_Axis"], joystick_queue["PSB_Right_Horizontal_Axis"])
-
-            
-            #     pSB_CIRCLE_state = joystick_queue["PSB_CIRCLE"]
     except KeyboardInterrupt:
         GPIO.cleanup()
 

@@ -19,6 +19,7 @@ import RPi.GPIO as GPIO
 button_map = {"PSB_CROSS":2, "PSB_CIRCLE":1, "PSB_SQUARE":3, "PSB_TRIANGLE":0,
     "PSB_L1": 4, "PSB_R1":5, "PSB_L2":6, "PSB_R2":7,
     "PSB_SELECT":8, "PSB_START":9, "PSB_L3":10, "PSB_R3":11}
+
 axis_map = {"PSB_Left_Horizontal_Axis":0, "PSB_Left_Vertical_Axis":1, "PSB_Right_Horizontal_Axis":2, "PSB_Right_Vertical_Axis":3}
 
 
@@ -32,7 +33,6 @@ pSB_R2 = 0
 def control_thread(q):
     print("Pangolin run !!!")
     isSit = False
-    start = True
     pSB_CIRCLE_state = 0
 
     while True:
@@ -47,6 +47,7 @@ def control_thread(q):
                 else:
                     ServoCmd.standUp()
                     isSit = False
+                
             if pSB_CIRCLE_state == 0 and isSit == True:
                 ServoCmd.sit_act(joystick_queue["PSB_Left_Vertical_Axis"], joystick_queue["PSB_Right_Vertical_Axis"])
 
@@ -63,12 +64,11 @@ def control_thread(q):
 
         
             pSB_CIRCLE_state = joystick_queue["PSB_CIRCLE"]
-            # print(pSB_CIRCLE_state, "sit:", isSit)
+            print(pSB_CIRCLE_state, "sit:", isSit)
             # print(joystick_queue["PSB_Left_Vertical_Axis"], joystick_queue["PSB_Right_Vertical_Axis"])
     
 
             
-
 def joystick_thread(q):
     connected = False
     lastTime = time.time()
