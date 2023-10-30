@@ -74,12 +74,9 @@ def control_thread(q):
                     pSB_CIRCLE_state = joystick_queue["PSB_CIRCLE"]
 
                 key1_state = GPIO.input(button_pin)
-                print(key1)
 
     except KeyboardInterrupt:
         GPIO.cleanup()
-
-
             
 
 def joystick_thread(q):
