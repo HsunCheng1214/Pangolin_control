@@ -7,8 +7,9 @@ import time
 import RPi.GPIO as GPIO
 #from BusServoCmd import *
 from smbus2 import SMBus, i2c_msg
-from rpi_ws281x import PixelStrip
-from rpi_ws281x import Color as PixelColor
+# from rpi_ws281x import PixelStrip
+# from rpi_ws281x import Color as PixelColor
+from os import geteuid
 
 #幻尔科技raspberrypi扩展板sdk#
 if sys.version_info.major == 2:
@@ -29,18 +30,19 @@ __i2c_addr = 0x7A
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BOARD)
 
-__RGB_COUNT = 2
-__RGB_PIN = 12
-__RGB_FREQ_HZ = 800000
-__RGB_DMA = 10
-__RGB_BRIGHTNESS = 120
-__RGB_CHANNEL = 0
-__RGB_INVERT = False
-RGB = PixelStrip(__RGB_COUNT, __RGB_PIN, __RGB_FREQ_HZ, __RGB_DMA, __RGB_INVERT, __RGB_BRIGHTNESS, __RGB_CHANNEL)
-RGB.begin()
-for i in range(RGB.numPixels()):
-    RGB.setPixelColor(i, PixelColor(0,0,0))
-    RGB.show()
+# __RGB_COUNT = 2
+# __RGB_PIN = 12
+# __RGB_FREQ_HZ = 800000
+# __RGB_DMA = 10
+# __RGB_BRIGHTNESS = 120
+# __RGB_CHANNEL = 0
+# __RGB_INVERT = False
+
+# RGB = PixelStrip(__RGB_COUNT, __RGB_PIN, __RGB_FREQ_HZ, __RGB_DMA, __RGB_INVERT, __RGB_BRIGHTNESS, __RGB_CHANNEL)
+# RGB.begin()
+# for i in range(RGB.numPixels()):
+#     RGB.setPixelColor(i, PixelColor(0,0,0))
+#     RGB.show()
 
 def setMotor(index, speed):
     if index < 1 or index > 4:

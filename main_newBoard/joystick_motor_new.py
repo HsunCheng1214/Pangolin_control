@@ -8,10 +8,13 @@ import threading
 import pygame
 import time
 import ServoCmd 
+import RPi.GPIO as GPIO
 from time import sleep
 from Board import setPWMServoPulse
 from queue import Queue
-import RPi.GPIO as GPIO
+from os import geteuid
+
+
 
 button_pin = 33 #gpio mode: board
 GPIO.setup(button_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
@@ -155,12 +158,13 @@ def joystick_init():
         jsHat= js.get_numhats()
         print("Number of hats:", jsHat)
 
-
-
-if __name__ == "__main__":
+def main():
     q = Queue()
     threads = []
     threads.append(threading.Thread(target = control_thread, args = (q,)))
     threads.append(threading.Thread(target = joystick_thread, args = (q,)))
     threads[0].start()
     threads[1].start()
+
+if __name__ == "__main__":
+    main()
