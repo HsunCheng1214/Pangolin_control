@@ -53,10 +53,10 @@ def control_thread(q):
                     #start
                     if joystick_queue["PSB_CIRCLE"] == 1 and pSB_CIRCLE_state == 0:
                         if isSit == False:
-                            ServoCmd.sitDown()
+                            ServoCmd.sit_down()
                             isSit = True
                         else:
-                            ServoCmd.standUp()
+                            ServoCmd.stand_up()
                             isSit = False
 
                     if pSB_CIRCLE_state == 0 and isSit == True:

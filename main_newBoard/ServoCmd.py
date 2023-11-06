@@ -3,7 +3,7 @@ import threading
 # from PWMServoControl import *
 from time import sleep
 from Board import setPWMServoPulse
-from multi_robot_datatype import BatteryState, OverViewState, JointStates, UWBState, Vector3, Twist
+# from multi_robot_datatype import BatteryState, OverViewState, JointStates, UWBState, Vector3, Twist
 # import ActionGroupControl as AGC
 
 # servo = PWMServo()
@@ -84,7 +84,7 @@ def move(linear, angular):
     forward(servo_angle = [40, 40, -40, -40], sleepTime=0.08, servo_rate=[linear_x-angular_z, linear_x+angular_z])
 
 
-def sitDown():
+def sit_down():
     deviation = [0 ,100, -100, -100]
     setPWMServoPulse(4, int(1500 + deviation[0]), 1000)
     sleep(0.0085)
@@ -122,7 +122,7 @@ def sitDown():
     setPWMServoPulse(1, int(1600 + deviation[3]), 1000)
     sleep(1)
 
-def standUp():
+def stand_up():
     deviation = [0 ,100, -100, -100]
     setPWMServoPulse(4, int(1500 + deviation[0]), 1000)
     sleep(0.0085)
