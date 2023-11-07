@@ -3,17 +3,17 @@
 import os, sys, math
 import numpy as np
 # import cv2
+# import ServoCmd 
 import signal
 import threading
 import pygame
 import time
-import ServoCmd 
 import RPi.GPIO as GPIO
 from time import sleep
 from Board import setPWMServoPulse
 from queue import Queue
 from os import geteuid
-
+from ServoCmd_new import Servo
 
 
 button_pin = 33 #gpio mode: board
@@ -30,6 +30,7 @@ left_rate = 0.5
 right_rate = 1.3
 pSB_R2 = 0
 
+ServoCmd = Servo()
 
 def control_thread(q):
     pSB_CIRCLE_state = 0
@@ -70,7 +71,7 @@ def control_thread(q):
                             ServoCmd.move_joystick(-0.4, joystick_queue["PSB_Right_Horizontal_Axis"])    
                 
                         elif abs(joystick_queue["PSB_Left_Vertical_Axis"]) >= 0.01 or abs(joystick_queue["PSB_Right_Horizontal_Axis"]) >= 0.01:
-                            ServoCmd.default()
+                            ServoCmd.initial_position()
                             ServoCmd.move_joystick(joystick_queue["PSB_Left_Vertical_Axis"], joystick_queue["PSB_Right_Horizontal_Axis"])
 
         
